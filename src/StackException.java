@@ -1,4 +1,5 @@
-public class StackException extends RuntimeException{
-
-    public StackException(){ }
+public abstract class StackException extends RuntimeException{
+    /***
+     * This class is meant for grouping Stack related runtime exceptions
+     */
 }
