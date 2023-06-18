@@ -2,6 +2,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 
 class MyCloneable implements Cloneable {
     private int num;
@@ -35,7 +36,7 @@ class MyCloneable implements Cloneable {
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SongAlreadyExistsException {
         testPartA();
         testPartB();
     }
@@ -143,12 +144,12 @@ public class Main {
         }
         System.out.println("Done iterating " + name + ".");
         System.out.println();
-    }
+    }*/
 
     /**
      * Tests for part B.
      */
-    private static void testPartB() {
+    private static void testPartB() throws SongAlreadyExistsException {
         Playlist playlist1 = new Playlist();
         for (Song s : playlist1) {
             System.out.println("You should not reach here!");
