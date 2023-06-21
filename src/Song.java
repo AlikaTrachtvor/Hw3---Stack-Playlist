@@ -2,7 +2,7 @@ public class Song implements Cloneable{
     private String songName;
     private String artistName;
     private Genre genre;
-    private int duration;
+    private Integer duration;
     public enum Genre {
         POP,
         ROCK,
@@ -12,19 +12,17 @@ public class Song implements Cloneable{
         DISCO
     }
 
-    public Song(String songName,String artistName,Genre genre,int duration){
+    public Song(String songName,String artistName,Genre genre, int duration){
         this.songName = songName;
         this.artistName = artistName;
         this.genre = genre;
         this.duration = duration;
     }
 
-
-    public void setDuration(int duration){
-        this.duration = duration;
-    }
-
-
+    public String getArtistName(){return this.artistName;}
+    public Song.Genre getGenre(){return this.genre;}
+    public Integer getDuration(){return this.duration;}
+    public void setDuration(int duration){this.duration = duration;}
     @Override
     public boolean equals(Object object){
         if(!(object instanceof Song))
@@ -55,8 +53,11 @@ public class Song implements Cloneable{
 
     @Override
     public String toString(){
-        String str = this.songName +", " +this.artistName +", "+this.genre+", "
-                +this.duration/60 +":"+this.duration%60;
+        String str = this.songName + ", " +this.artistName + ", "+this.genre + ", " + this.duration/60 + ":";
+        if(this.duration % 60 < 10)
+            str += "0" + this.duration % 60;
+        else
+            str += this.duration % 60;
         return str;
     }
 

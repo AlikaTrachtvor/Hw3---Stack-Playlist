@@ -1,39 +1,24 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
-public class Playlist implements Cloneable {
+import java.util.ListIterator;
 
+public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIterable {
     private ArrayList<Song> playList;
-
-    private abstract class PlaylistIterator implements Iterable<Song> {
-        private Playlist playList;
-        private  int currentIndex;
-
-        public PlaylistIterator(Playlist playlist,int currentIndex) {
-            this.playList = playlist;
-            this.currentIndex = currentIndex;
-        }
-
-        public boolean hasNext() {
-            return this.currentIndex < this.playList.getSize();
-        }
-
-        public Song next() throws Exception {
-            if (!hasNext()) {
-                throw new java.util.NoSuchElementException();
-            }
-            Song nextSong = this.playList.playList.get(currentIndex+1);
-            return nextSong;
-        }
-
-
-    }
+    private String artistFilter;
+    private Song.Genre genreFilter;
+    private Integer durationFilter;
+    private ScanningOrder so;
     public Playlist(){
         this.playList = new ArrayList<>();
+        this.artistFilter = null;
+        this.genreFilter = null;
+        this.durationFilter = null;
+        this.so = null;
     }
     public int getSize(){
         return this.playList.size();
     }
-
     public void addSong(Song song) throws SongAlreadyExistsException{
         int i;
         for (i = 0; i < this.playList.size(); i++) {
@@ -42,7 +27,6 @@ public class Playlist implements Cloneable {
         }
         playList.add(song);
     }
-
     public boolean removeSong(Song song){
         int i;
         for(i=0;i<this.playList.size();i++){
@@ -73,6 +57,7 @@ public class Playlist implements Cloneable {
         }
     }
 
+    //needs to be replaced with super
     @Override
     public Playlist clone () {
         Playlist copyList = new Playlist();
@@ -93,6 +78,56 @@ public class Playlist implements Cloneable {
         }
         strList += "]";
         return strList;
+    }
+
+    @Override
+    public void filterArtist(String name){this.artistFilter = name;}
+    @Override
+    public void filterGenre(Song.Genre genre){this.genreFilter = genre;}
+    @Override
+    public void filterDuration(int duration){this.durationFilter = duration;}
+    @Override
+    public void setScanningOrder(ScanningOrder so){this.so = so;}
+    @Override
+    public PlaylistIterator iterator(){return new PlaylistIterator();}
+    private class PlaylistIterator implements Iterator<Song>{
+        private ArrayList<Song> temp = (ArrayList<Song>) playList.clone();
+        private String artist = artistFilter;
+        private Song.Genre genre = genreFilter;
+        private Integer duration = durationFilter;
+        private ScanningOrder order = so;
+        private int size = 0;
+        private int currIndex = 0;
+        public PlaylistIterator(){
+            if(!temp.isEmpty()){
+                if(this.artist != null)
+                    temp.removeIf(song -> !(song.getArtistName().equals(this.artist)));
+                if(this.genre != null)
+                    temp.removeIf(song -> !(song.getGenre().equals(this.genre)));
+                if(this.duration != null)
+                    temp.removeIf(song -> song.getDuration() > this.duration);
+
+                if(temp != null && order.equals(ScanningOrder.NAME))
+                    temp.sort(Comparator.comparing((Song s) -> s.getArtistName()));
+                else if (order.equals(ScanningOrder.DURATION))
+                    temp.sort(Comparator.comparing((Song s) -> s.getDuration()));
+                this.size = temp.size();
+            }
+        }
+
+        @Override
+        public boolean hasNext(){
+            if(this.currIndex < size)
+                return true;
+            return false;
+        }
+
+        @Override
+        public Song next(){
+            if(hasNext())
+                return temp.get(currIndex++);
+            return null;
+        }
     }
 
 }

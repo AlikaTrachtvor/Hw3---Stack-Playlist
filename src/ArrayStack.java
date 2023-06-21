@@ -1,5 +1,4 @@
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 
 /***
@@ -99,9 +98,8 @@ public class ArrayStack<E extends Cloneable> implements Stack<E>{
             ArrayStack<E> copy = new ArrayStack<E>(this.maxCapacity);
             copy.size = this.size;
             copy.data = this.data.clone();
-            Method clone = this.data[0].getClass().getMethod("clone");
             for (int i = 0; i < this.size; i++) {
-                copy.data[i] = (E)clone.invoke(copy.data[i]);
+                copy.data[i] = (E)this.data[i].getClass().getMethod("clone").invoke(copy.data[i]);
             }
             return copy;
         }
@@ -113,14 +111,14 @@ public class ArrayStack<E extends Cloneable> implements Stack<E>{
     /***
      * This is and internal class of an Iterator to enable scanning of the Stack
      */
-    class StackIterator<E> implements Iterator<E> {
+    private class StackIterator<E> implements Iterator<E> {
 
         private int currIndex;
-        private E[] data;
+        private E[] iteratorData;
 
-        public StackIterator(int index, E[] data){
-            this.currIndex = index;
-            this.data = data;
+        public StackIterator(){
+            this.currIndex = size - 1;
+            this.iteratorData = (E[]) data;
         }
 
         /***
@@ -141,7 +139,7 @@ public class ArrayStack<E extends Cloneable> implements Stack<E>{
         @Override
         public E next(){
             if(hasNext()) {
-                E element = this.data[this.currIndex];
+                E element = this.iteratorData[this.currIndex];
                 this.currIndex--;
                 return element;
             }
@@ -154,7 +152,7 @@ public class ArrayStack<E extends Cloneable> implements Stack<E>{
      * @return a StackIterator used to scan the Objects in the Stack
      */
     @Override
-    public StackIterator<E> iterator(){return new StackIterator(this.size - 1, this.data);}
+    public StackIterator<E> iterator(){return new StackIterator();}
 
 
 }

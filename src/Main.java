@@ -37,7 +37,7 @@ class MyCloneable implements Cloneable {
 
 public class Main {
     public static void main(String[] args) throws SongAlreadyExistsException {
-        testPartA();
+        //testPartA();
         testPartB();
     }
 
@@ -144,7 +144,7 @@ public class Main {
         }
         System.out.println("Done iterating " + name + ".");
         System.out.println();
-    }*/
+    }
 
     /**
      * Tests for part B.
