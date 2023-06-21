@@ -9,7 +9,7 @@ public class Playlist implements Cloneable {
         private  int currentIndex;
 
         public PlaylistIterator(Playlist playlist,int currentIndex) {
-           this.playList = playlist;
+            this.playList = playlist;
             this.currentIndex = currentIndex;
         }
 
@@ -25,9 +25,10 @@ public class Playlist implements Cloneable {
             return nextSong;
         }
 
+
     }
     public Playlist(){
-        playList = new ArrayList<>();
+        this.playList = new ArrayList<>();
     }
     public int getSize(){
         return this.playList.size();
@@ -36,9 +37,9 @@ public class Playlist implements Cloneable {
     public void addSong(Song song) throws SongAlreadyExistsException{
         int i;
         for (i = 0; i < this.playList.size(); i++) {
-            if (this.playList.get(i) == song)
-               throw new SongAlreadyExistsException();
-            }
+            if (this.playList.get(i).equals(song))
+                throw new SongAlreadyExistsException();
+        }
         playList.add(song);
     }
 
@@ -55,13 +56,14 @@ public class Playlist implements Cloneable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Playlist otherPlayList))
+        if (!(object instanceof Playlist ))
             return false;
         else {
+            Playlist otherList = (Playlist) object;
             int i, j, counter = 0;
             for (i = 0; i < this.playList.size(); i++) {
                 for (j = 0; j < this.playList.size(); j++) {
-                    if (this.playList.get(i).equals(otherPlayList.playList.get(j))) {
+                    if (this.playList.get(i).equals(otherList.playList.get(j))) {
                         counter++;
                         break;
                     }
@@ -74,18 +76,23 @@ public class Playlist implements Cloneable {
     @Override
     public Playlist clone () {
         Playlist copyList = new Playlist();
-            for (Song song : this.playList)
-                copyList.playList.add(song.clone());
+        for (Song song : this.playList)
+            copyList.playList.add(song.clone());
         return copyList;
     }
 
-   @Override
+    @Override
     public String toString(){
         int i;
-        String strList="";
-        for(i=0;i<this.playList.size();i++)
-            strList += this.playList.get(i).toString();
-       return strList;
-   }
+        String strList="[";
+        for(i=0;i<this.playList.size();i++) {
+            strList += "(" + this.playList.get(i).toString();
+            if(i != this.playList.size() -1)
+                strList += "), ";
+            else strList += ")";
+        }
+        strList += "]";
+        return strList;
+    }
 
 }

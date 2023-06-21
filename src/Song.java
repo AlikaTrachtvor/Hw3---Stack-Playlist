@@ -19,14 +19,6 @@ public class Song implements Cloneable{
         this.duration = duration;
     }
 
-    public Song(){
-        this.songName = null;
-        this.artistName = null;
-        this.duration =0;
-        this.genre =null;
-    }
-
-
 
     public void setDuration(int duration){
         this.duration = duration;
@@ -36,40 +28,37 @@ public class Song implements Cloneable{
     @Override
     public boolean equals(Object object){
         if(!(object instanceof Song))
-        return false;
+            return false;
         else{
             Song otherSong = (Song)object;
-            if(this.hashCode() != otherSong.hashCode())
+            if(this.artistName != otherSong.artistName || this.songName != otherSong.songName)
                 return false;
-            else
-                return true;
         }
+        return true;
     }
 
     @Override
     public int hashCode(){
-        int hash = 0,i;
-        for(i=0;i<this.songName.length();i++)
-            hash++;
-        return hash + this.duration;
+        int hash = this.songName.length() + this.artistName.length();
+        return hash;
     }
 
     @Override
     public Song clone() {
         try {
             return (Song) super.clone();
-        } catch (CloneNotSupportedException e) {
+        }
+        catch (CloneNotSupportedException e) {
             return null;
         }
     }
 
     @Override
     public String toString(){
-        String str =this.songName +", " +this.artistName +", "+this.genre+", " +this.duration/100+":"+this.duration/10;
+        String str = this.songName +", " +this.artistName +", "+this.genre+", "
+                +this.duration/60 +":"+this.duration%60;
         return str;
     }
 
-    }
-
-
+}
 
