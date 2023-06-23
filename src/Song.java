@@ -19,6 +19,7 @@ public class Song implements Cloneable{
         this.duration = duration;
     }
 
+    public String getSongName(){return this.songName;}
     public String getArtistName(){return this.artistName;}
     public Song.Genre getGenre(){return this.genre;}
     public Integer getDuration(){return this.duration;}

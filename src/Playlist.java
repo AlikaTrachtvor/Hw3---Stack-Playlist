@@ -46,7 +46,7 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
             Playlist otherList = (Playlist) object;
             int i, j, counter = 0;
             for (i = 0; i < this.playList.size(); i++) {
-                for (j = 0; j < this.playList.size(); j++) {
+                for (j = 0; j < otherList.playList.size(); j++) {
                     if (this.playList.get(i).equals(otherList.playList.get(j))) {
                         counter++;
                         break;
@@ -114,9 +114,9 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
                 if(this.duration != null)
                     temp.removeIf(song -> song.getDuration() > this.duration);
 
-                if(temp != null && order.equals(ScanningOrder.NAME))
-                    temp.sort(Comparator.comparing((Song s) -> s.getArtistName()));
-                else if (order.equals(ScanningOrder.DURATION))
+                if(!(temp.isEmpty()) && order != null && order.equals(ScanningOrder.NAME))
+                    temp.sort(Comparator.comparing((Song s) -> s.getSongName()));
+                else if (!(temp.isEmpty()) && order!=null && order.equals(ScanningOrder.DURATION))
                     temp.sort(Comparator.comparing((Song s) -> s.getDuration()));
                 this.size = temp.size();
             }
