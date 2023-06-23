@@ -60,10 +60,17 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
     //needs to be replaced with super
     @Override
     public Playlist clone () {
-        Playlist copyList = new Playlist();
-        for (Song song : this.playList)
-            copyList.playList.add(song.clone());
-        return copyList;
+        try {
+            Playlist copyList = (Playlist) super.clone();
+            copyList.playList = new ArrayList<>();
+            for (Song song : this.playList){
+                copyList.playList.add(song.clone());
+            }
+            return copyList;
+        }
+        catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override

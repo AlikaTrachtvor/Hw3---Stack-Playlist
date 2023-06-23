@@ -1,9 +1,9 @@
 
 public class SongAlreadyExistsException  extends Exception{
-    private String exception;
-    public SongAlreadyExistsException(){
-        this.exception = "Cannot add the song!";
-    }
+    public SongAlreadyExistsException(){ }
+    public SongAlreadyExistsException(String message){super(message);}
+    public SongAlreadyExistsException(String message, Throwable cause){
+        super(message, cause);}
 
 
 }
