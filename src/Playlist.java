@@ -3,6 +3,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+/***
+ *This class represents an object playlist
+ * This object is a list of Songs and contains each song's information
+ */
+
 public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIterable {
     private ArrayList<Song> playList;
     private String artistFilter;
@@ -16,9 +21,12 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
         this.durationFilter = null;
         this.so = null;
     }
-    public int getSize(){
-        return this.playList.size();
-    }
+
+    /***
+     * adding a song to the playlist, if the song already exists then throws exception
+     * @param song song that the user wants to add to the playlist
+     * @throws SongAlreadyExistsException an exception for if the song is already exists in the playlist
+     */
     public void addSong(Song song) throws SongAlreadyExistsException{
         int i;
         for (i = 0; i < this.playList.size(); i++) {
@@ -27,6 +35,12 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
         }
         playList.add(song);
     }
+
+    /***
+     * removes a song from the playlist
+     * @param song song that the user wants to remove from the playlist
+     * @return true if the remove process succeeded otherwise false
+     */
     public boolean removeSong(Song song){
         int i;
         for(i=0;i<this.playList.size();i++){
@@ -57,7 +71,16 @@ public class Playlist implements Cloneable, FilteredSongIterable, OrderedSongIte
         }
     }
 
-    //needs to be replaced with super
+    @Override
+    public int hashCode(){
+        int hash =0;
+        for(Song song: this.playList){
+            hash += song.hashCode();
+        }
+        return hash;
+    }
+
+
     @Override
     public Playlist clone () {
         try {

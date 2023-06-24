@@ -1,3 +1,9 @@
+
+/***
+ *This class represents an object Song
+ * This object contain the following information: song name, artist name, song genre and song's duration
+ */
+
 public class Song implements Cloneable{
     private String songName;
     private String artistName;
@@ -38,7 +44,13 @@ public class Song implements Cloneable{
 
     @Override
     public int hashCode(){
-        int hash = this.songName.length() + this.artistName.length();
+        int hash = 0;
+        int i;
+        for(i=0;i<this.songName.length();i++)
+            hash += (int)this.songName.charAt(i);
+        for(i=0;i<this.artistName.length();i++)
+            hash +=(int) this.artistName.charAt(i);
+
         return hash;
     }
 
